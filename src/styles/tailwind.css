@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+    @apply h-screen w-screen;
+}
+@import url('https://pro.fontawesome.com/releases/v5.10.0/css/all.css');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap");
+html {
+    scroll-behavior: smooth;
+    font-family: "Nunito", sans-serif;
+    @apply select-none;
+}
+
+.click\:scale {
+    @apply cursor-pointer duration-200;
+}
+
+.click\:scale:active {
+    @apply scale-95;
+}
+
+.fcc {
+    @apply flex items-center justify-center;
+}
+
+.fcb {
+    @apply flex items-center justify-between;
+}
+
+.fc {
+    @apply flex items-center;
+}
+
+.ifc {
+    @apply inline-flex items-center;
+}
+
+.container {
+    @apply max-w-[500px] mx-auto relative;
+}
+
+.input {
+    @apply ring-0;
+}
+
+.input:focus {
+    @apply border-bluish-500 shadow-bluish;
+}

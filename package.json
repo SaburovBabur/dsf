@@ -1,0 +1,64 @@
+{
+    "name": "pcg.uz",
+    "version": "0.0.0",
+    "private": true,
+    "dependencies": {
+        "@craco/craco": "^6.3.0",
+        "@headlessui/react": "^1.4.1",
+        "@heroicons/react": "^1.0.4",
+        "clsx": "^1.1.1",
+        "@testing-library/jest-dom": "^5.14.1",
+        "@testing-library/react": "^11.2.7",
+        "@testing-library/user-event": "^12.8.3",
+        "axios": "^0.23.0",
+        "daisyui": "^1.14.4",
+        "lodash": "^4.17.21",
+        "nuka-carousel": "^4.8.2",
+        "react": "^17.0.2",
+        "react-alert": "^7.0.3",
+        "react-cookie": "^4.1.1",
+        "react-dom": "^17.0.2",
+        "react-hook-form": "^7.17.4",
+        "react-images-uploading": "^3.1.3",
+        "react-input-mask": "^2.0.4",
+        "react-router-dom": "^5.3.0",
+        "react-scripts": "4.0.3",
+        "swr": "^1.0.1",
+        "web-vitals": "^1.1.2"
+    },
+    "scripts": {
+        "start": "TAILWIND_MODE=watch craco start",
+        "build": "CI=false craco build",
+        "test": "craco test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "autoprefixer": "^9.8.8",
+        "cross-env": "^7.0.3",
+        "postcss": "^8.3.9",
+        "postcss-cli": "^9.0.1",
+        "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
+    },
+    "main": "index.js",
+    "repository": "https://github.com/algorithmgateway-uz/pcg.uz.git",
+    "author": "00011415 <wiut11415@gmail.com>",
+    "license": "MIT"
+}
