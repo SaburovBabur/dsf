@@ -2,14 +2,15 @@
 
 1. DAY - 1
 
-    - Home page full BACKEND connect (Carousel, Article, Search Filter) ✅
+    - Carousel, Article, Search Filter ✅
     - Logout ✅
     - Filter ✅
     - Add Business ✅
 
 2. DAY - 2
-    - List Businesses ✅
+    - List-Out Businesses ✅
     - Complete Auth ✅
+    - Moderator Filter UI ✅
 
 3. DAY - 3
     - Moderator Filter (Users)

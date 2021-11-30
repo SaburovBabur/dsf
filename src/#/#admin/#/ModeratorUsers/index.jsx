@@ -4,14 +4,20 @@ import Register from "#/#auth/#/Register";
 import useToggle from "hooks/useToggle.jsx";
 import useSWR from "swr";
 import API from "config/API";
+import { useState } from "react";
+import Select from "cmp/Select";
+import { ArrowRightIcon, EyeIcon } from "@heroicons/react/outline";
 
 function ModeratorUsers(props) {
   const [drawer, toggleDrawer] = useToggle();
+  const [filter, toggleFilter] = useToggle();
 
   const { data, error, loading } = useSWR(
     ["backoffice/users/?status=false", getCookie("ACCESS_TOKEN")],
     API
   );
+  const [isLoading, setAsLoading] = useState(false);
+  const [filterStatus, setFilterStatus] = useState(false);
 
   if (loading) {
     return "Loading";
@@ -27,36 +33,128 @@ function ModeratorUsers(props) {
 
   const { data: users } = data;
 
-  const people = [
-    {
-      id: "1",
-      name: "Jane Cooper",
-      koaching: "1",
-      group: "1",
-      title: "Regional Paradigm Technician",
-      department: "Optimization",
-      role: "Admin",
-      email: "jane.cooper@example.com",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-    },
-
-    {
-      id: "2",
-      name: "Jane Cooper",
-      koaching: "2",
-      group: "1",
-      title: "Regional Paradigm Technician",
-      department: "Optimization",
-      role: "Admin",
-      email: "jane.cooper@example.com",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-    },
-  ];
-
   return (
     <div className="px-12 py-12">
+      <div
+        className={cn({
+          "drawer | shadow-300 absolute inset-0 | z-50 | flex justify-end": true,
+          "opacity-0 hidden": !filter,
+        })}
+      >
+        <div
+          className="bg-gray-500 bg-opacity-50 | w-3/5 | cursor-pointer"
+          onClick={() => toggleFilter()}
+        ></div>
+        <div className="bg-white w-2/5 px-5 py-5">
+          <h1 className="text-3xl font-bold text-center">Filterlar</h1>
+
+          <div className="">
+            <div className="py-5">
+              <h1 className="font-bold pb-3">Vaqt oralig'i:</h1>
+              <div className="fcb | space-x-10">
+                <input
+                  type="date"
+                  max={31}
+                  placeholder="Kun"
+                  className="input | m-0 | w-full | input-bordered"
+                />
+
+                <input
+                  type="date"
+                  max={31}
+                  placeholder="Kun"
+                  className="input | m-0 | w-full | input-bordered"
+                />
+              </div>
+            </div>
+
+            <div className="py-5">
+              <h1 className="font-bold pb-3">Filter status:</h1>
+              <div className="space-y-5 | pt-3">
+                <label className="fc | cursor-pointer" htmlFor={`tasdiqlangan`}>
+                  <input
+                    id="tasdiqlangan"
+                    type="checkbox"
+                    className="checkbox checkbox-primary"
+                  />
+
+                  <h1 className="font-bold pl-3 | capitalize">Tasdiqlangan</h1>
+                </label>
+
+                <label
+                  className="fc | cursor-pointer"
+                  htmlFor={`tasdiqlanmagan`}
+                >
+                  <input
+                    id="tasdiqlanmagan"
+                    type="checkbox"
+                    className="checkbox checkbox-primary"
+                  />
+
+                  <h1 className="font-bold pl-3 | capitalize">
+                    Tasdiqlanmagan
+                  </h1>
+                </label>
+
+                <label className="fc | cursor-pointer" htmlFor={`barchasi`}>
+                  <input
+                    id="barchasi"
+                    type="checkbox"
+                    className="checkbox checkbox-primary"
+                  />
+
+                  <h1 className="font-bold pl-3 | capitalize">barchasi</h1>
+                </label>
+
+                <label className="fc | cursor-pointer" htmlFor={`qaytarilgan`}>
+                  <input
+                    id="qaytarilgan"
+                    type="checkbox"
+                    className="checkbox checkbox-primary"
+                  />
+
+                  <h1 className="font-bold pl-3 | capitalize">qaytarilgan</h1>
+                </label>
+              </div>
+
+              <div className="py-10">
+                <h1 className="font-bold pb-3">Kouching guruh raqami:</h1>
+
+                <div className="w-full">
+                  <Select
+                    onSelect={(e) => console.log(e)}
+                    by={`name`}
+                    options={[
+                      {
+                        id: 1,
+                        name: 1,
+                      },
+                      {
+                        id: 2,
+                        name: 2,
+                      },
+
+                      {
+                        id: 3,
+                        name: 3,
+                      },
+                    ]}
+                  />
+                </div>
+              </div>
+              <button
+                className={cn({
+                  "fc | btn btn-outline btn-block bg-bluish hover:bg-bluish-600 font-bold border-none text-white | outline-none |": true,
+                  loading: isLoading,
+                })}
+              >
+                Ko'rish <EyeIcon className="h-5 | ml-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
         className={cn({
           "drawer | shadow-300 absolute inset-0 | z-50 | flex justify-end": true,
@@ -78,8 +176,8 @@ function ModeratorUsers(props) {
       <div className="fcb">
         <h1 className="font-bold text-xl">Foydalanuvchilarni tasdiqlash</h1>
 
-        <div class="avatar | fc">
-          <div class="rounded-full w-12 h-12">
+        <div className="avatar | fc">
+          <div className="rounded-full w-12 h-12">
             <img src="https://media.gettyimages.com/photos/closeup-smiling-male-leader-wearing-eyeglasses-picture-id1179627340?s=612x612" />
           </div>
 
@@ -88,7 +186,7 @@ function ModeratorUsers(props) {
       </div>
 
       <div className="search | mt-12 | fc w-full">
-        <div class="relative w-full">
+        <div className="relative w-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 | absolute left-4 top-1/4 | text-bluish-400 | pointer-events-none"
@@ -106,11 +204,14 @@ function ModeratorUsers(props) {
           <input
             type="text"
             placeholder="Ism | Guruh | Email  -  orqali qidirish..."
-            class="w-full px-12 input input-primary border-bluish-300 input-bordered rounded-full"
+            className="w-full px-12 input input-primary border-bluish-300 input-bordered rounded-full"
           />
         </div>
 
-        <div className="filter | bg-blue-50 hover:bg-blue-100 p-3 ml-5 | rounded-md | cursor-pointer | click:scale">
+        <div
+          className="filter | bg-blue-50 hover:bg-blue-100 p-3 ml-5 | rounded-md | cursor-pointer | click:scale"
+          onClick={() => toggleFilter()}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 | text-bluish-500"
