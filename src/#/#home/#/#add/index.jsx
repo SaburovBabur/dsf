@@ -10,11 +10,11 @@ import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { ArrowRightIcon, ChevronLeftIcon } from "@heroicons/react/outline";
 import { useForm } from "react-hook-form";
-import API from "config/API";
+import API, { getCookie, HTTP } from "config/API";
 import useSWR from "swr";
+import Spinner from "cmp/Spinner";
 
 function Business() {
-  const [step, setStep] = useState(1);
   const [isLoading, setAsLoading] = useState(false);
 
   const alert = useAlert();
@@ -22,111 +22,191 @@ function Business() {
 
   const { register, handleSubmit, watch, formState } = useForm();
   const [image, setImage] = useState(false);
-  const password = watch("password");
+  const [galleries, setGalleries] = useState(false);
   const [userData, setUserData] = useState({
-    image: "",
-    first_name: "",
-    last_name: "",
-    middle_name: "",
-    birthday: "",
-    phone_number: "",
-    email: "",
-    referral_code: "",
-    password: "",
-    password2: "",
+    logo: "",
+    name: "",
+    activity_type: "",
+    galleries: [],
+    lat_long: "",
+    position: "",
+    region: "",
 
     instagram: "",
     telegram: "",
     facebook: "",
-
-    sms_code: "",
-    group_id: "",
+    website: "",
   });
 
-  const { data, error } = useSWR("profile/coaching-type/", API, {
-    focusThrottleInterval: 5000 * 12 * 2,
-  });
+  const { data: businessData, error: businessError } = useSWR(
+    ["profile/business-activity/", getCookie("ACCESS_TOKEN")],
+    API
+  );
+  const { data: addressData, error: addressError } = useSWR(
+    ["profile/business-region/", getCookie("ACCESS_TOKEN")],
+    API
+  );
 
-  const [selectOne, setSelectOne] = useState([]);
-  const [selectTwo, setSelectTwo] = useState([]);
-  const [selectFinal, setSelectFinal] = useState([]);
+  const [selectType, setType] = useState([]);
+  const [selectAddress, setAddress] = useState([]);
+
+  if (!businessData || !addressData || businessError || addressError) {
+    return (
+      <div className="h-[calc(100vh-7rem)] w-full fcc py-12">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
-    <>
+    <div className="pb-20">
       <h1 className="py-7 px-5 | font-bold text-xl text-center">
         Biznesingiz xaqida ko'proq ma'lumot.
       </h1>
-      <div className="px-3 mx-2">
-        <div className="upload  | fc | py-5 px-5 | rounded-md | bg-white | h-1/3 w-full | hover:border-2 border-2 border-gray-300 border-dashed hover:border-[#30A8F7] | cursor-pointer | duration-200 ease-in">
-          <SvgImage className="h-12" />
+      <label htmlFor="logo">
+        {image && (
+          <div className="px-5 | h-32">
+            <div className="upload  | fc | py-2 px-3 | rounded-md | bg-white | h-full w-full | hover:border-2 border-2 border-gray-300 border-dashed hover:border-[#30A8F7] | cursor-pointer | duration-200 ease-in">
+              <img
+                src={image}
+                alt="sd"
+                className="object-contain h-full | mx-auto"
+              />
+            </div>
+          </div>
+        )}
+        {!image && (
+          <>
+            <div className="px-5 -pb-10 -mb-10 py-5">
+              {formState.errors.image && (
+                <p className="text-sm font-bold text-red-500 | py-2">
+                  Rasm yuklash shart:
+                </p>
+              )}
+              <div
+                className={cn({
+                  "upload  | fc | py-5 px-5 | rounded-md | bg-white | h-1/3 w-full | border-2 border-gray-300 border-dashed hover:border-[#30A8F7] | cursor-pointer | duration-200 ease-in": true,
+                  "border-red-500": formState.errors.image,
+                })}
+              >
+                <SvgImage className="h-12" />
 
-          <p className="pl-7 | font-semibold ">Logotipni yuklang</p>
-        </div>
-      </div>
+                <p className="pl-7 | font-semibold ">Logotipni yuklang</p>
+              </div>
+            </div>
+          </>
+        )}
+        <input
+          type="file"
+          id="logo"
+          accept=".png, .jpg, .jpeg"
+          className="h-0 w-0 p-0 m-0 opacity-0"
+          {...registerImage("logo")}
+          onChange={(e) => {
+            registerImage("logo").onChange(e);
+
+            setImage(URL.createObjectURL(e?.target?.files[0]));
+          }}
+        />
+      </label>
 
       <div className="register | px-5">
         <div className="form | space-y-6 | pt-5">
+          {formState.errors.name && (
+            <p className="text-sm font-bold text-red-500 | py-2">
+              Kiritish shart:
+            </p>
+          )}
           <input
             type="text"
             placeholder="* Biznesingiz nomi"
-            className="input | m-0 | w-full | input-bordered"
+            className={cn({
+              "input | m-0 | w-full | input-bordered": true,
+              "input-error": formState.errors.name,
+            })}
+            {...register("name", {
+              required: true,
+              maxLength: 100,
+            })}
           />
 
           <Select
             name={`Faoliyat Turi:`}
-            options={[
-              { name: "It" },
-              { name: "Bo'gbonchilik" },
-              { name: "Davlat" },
-              { name: "Bozor" },
-            ]}
+            by={`name`}
+            options={businessData?.data || []}
+            onSelect={(e) => setType(e)}
           />
 
+          {formState.errors.position && (
+            <p className="text-sm font-bold text-red-500 | py-2">
+              Kiritish shart:
+            </p>
+          )}
           <input
             type="text"
             placeholder="* Lavozimingiz"
-            className="input | m-0 | w-full | input-bordered"
+            className={cn({
+              "input | m-0 | w-full | input-bordered": true,
+              "input-error": formState.errors.position,
+            })}
+            {...register("position", {
+              required: true,
+              maxLength: 100,
+            })}
           />
 
           <Select
-            name={`Turar Joy:`}
-            options={[
-              { name: "Toshkent" },
-              { name: "Namangan" },
-              { name: "Andijon" },
-              { name: "Samarqand" },
-              { name: "Buxoro" },
-              { name: "Qoraqolpog'iston Respublikasi" },
-              { name: "Xorazm" },
-            ]}
+            name={`Manzil:`}
+            by={`name`}
+            options={addressData?.data || []}
+            onSelect={(e) => setAddress(e)}
           />
 
+          {formState.errors.website && (
+            <p className="text-sm font-bold text-red-500 | py-2">
+              Kiritish shart:
+            </p>
+          )}
           <input
-            type="url"
+            type="text"
             placeholder="* Websaytingiz"
-            className="input | m-0 | w-full | input-bordered"
+            className={cn({
+              "input | m-0 | w-full | input-bordered": true,
+              "input-error": formState.errors.website,
+            })}
+            {...register("website", {
+              required: true,
+              maxLength: 50,
+            })}
           />
 
           <p className="text-xs text-gray-500 | pt-10">
             Бизнесингизнинг ижтимоий тармоқлардаги саҳифалар ҳаволасини киритинг{" "}
             <br /> (* агар бўлса)
           </p>
+
           <div className="space-y-5">
             <input
               type="url"
-              max={31}
               placeholder="Instagram"
+              {...register("instagram", {
+                maxLength: 50,
+              })}
               className="input | m-0 | w-full | input-bordered"
             />
             <input
               type="url"
-              max={12}
+              {...register("telegram", {
+                maxLength: 50,
+              })}
               placeholder="Telegram"
               className="input | m-0 | w-full | input-bordered"
             />
             <input
               type="url"
-              max={2}
+              {...register("facebook", {
+                maxLength: 50,
+              })}
               placeholder="Facebook"
               className="input | m-0 | w-full | input-bordered"
             />
@@ -138,11 +218,54 @@ function Business() {
           </p>
 
           <div>
-            <div className="upload  | fcc | py-5 px-5 | rounded-md | bg-white | h-1/3 w-full | hover:border-2 border-2 border-gray-300 border-dashed hover:border-[#30A8F7] | cursor-pointer | duration-200 ease-in">
-              <SvgImage className="h-12" />
-            </div>
-          </div>
+            <label htmlFor="galleries">
+              {galleries && (
+                <div className="h-32">
+                  <div className="upload  | fc | py-2 px-3 | rounded-md | bg-white | h-full w-full | hover:border-2 border-2 border-gray-300 border-dashed hover:border-[#30A8F7] | cursor-pointer | duration-200 ease-in">
+                    <img
+                      src={galleries}
+                      alt="sd"
+                      className="object-contain h-full | mx-auto"
+                    />
+                  </div>
+                </div>
+              )}
+              {!galleries && (
+                <>
+                  <div className="">
+                    {formState.errors.galleries && (
+                      <p className="text-sm font-bold text-red-500 | py-2">
+                        Rasm yuklash shart:
+                      </p>
+                    )}
+                    <div
+                      className={cn({
+                        "upload  | fc | py-5 px-5 | rounded-md | bg-white | h-1/3 w-full | border-2 border-gray-300 border-dashed hover:border-[#30A8F7] | cursor-pointer | duration-200 ease-in": true,
+                        "border-red-500": formState.errors.galleries,
+                      })}
+                    >
+                      <SvgImage className="h-12" />
 
+                      <p className="pl-7 | font-semibold ">Qo'shimcha rasm</p>
+                    </div>
+                  </div>
+                </>
+              )}
+              <input
+                type="file"
+                id="galleries"
+                name="galleries"
+                accept=".png, .jpg, .jpeg"
+                className="h-0 w-0 p-0 m-0 opacity-0"
+                {...registerImage("galleries")}
+                onChange={(e) => {
+                  registerImage("galleries").onChange(e);
+
+                  setGalleries(URL.createObjectURL(e?.target?.files[0]));
+                }}
+              />
+            </label>
+          </div>
           <p className="text-xs text-gray-500 | pt-10">
             Kartadan joyingizni aniqlash
           </p>
@@ -158,29 +281,81 @@ function Business() {
             ></iframe>
           </div>
         </div>
+        <div className="fcc px-5 pb-5">
+          <button
+            className={cn({
+              "fc | btn btn-outline btn-block bg-bluish hover:bg-bluish-600 font-bold border-none text-white | outline-none |": true,
+              loading: isLoading,
+            })}
+            onClick={handleSubmit(onAdd)}
+          >
+            Yakunlash
+          </button>
+        </div>
       </div>
       <hr className="mx-5" />
-
-      <div className="fcc px-5 pb-5">
-        <button
-          className={cn({
-            "fc | btn btn-outline btn-block bg-bluish hover:bg-bluish-600 font-bold border-none text-white | outline-none |": true,
-            loading: isLoading,
-          })}
-          onClick={() => {
-            setAsLoading(true);
-            // alert.error("Tizim ishga tushmadi!");
-
-            setTimeout(() => {
-              history.push(`/auth/complete`);
-            }, 1250);
-          }}
-        >
-          Yakunlash
-        </button>
-      </div>
-    </>
+    </div>
   );
+
+  function registerImage(name, props) {
+    return register(name || "image", {
+      required: true,
+      ...props,
+    });
+  }
+
+  function onAdd(e) {
+    setAsLoading(true);
+
+    console.log(selectType);
+    console.log(selectAddress);
+
+    if (selectAddress.length == 0 || selectType.length == 0) {
+      setAsLoading(false);
+      alert.error("Gruppa Tanlanmadi!");
+
+      return;
+    }
+
+    const data = new FormData();
+
+    data.append("logo", e.logo[0]);
+    data.append("name", e.name);
+    data.append("position", e.position);
+    data.append("activity_type", selectType.id);
+    data.append("galleries", e.galleries);
+    data.append("about", e.about);
+    data.append("website", e.website);
+    data.append("region", selectAddress.id);
+    data.append("instagram", e.instagram);
+    data.append("telegram", e.telegram);
+    data.append("facebook", e.facebook);
+    data.append(
+      "lat_long",
+      data?.lat_long || `41.33916880214932:69.20007812109371`
+    );
+
+    HTTP.post("profile/user-business/", data, {
+      headers: {
+        Authorization: `Bearer ${getCookie("ACCESS_TOKEN")}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+
+        alert.success("Muvaffaqiyatli qo'shildi.");
+
+        setTimeout(() => {
+          history.push("/home/business");
+        }, 500);
+      })
+      .catch((res) => {
+        console.log(res);
+        alert.error(
+          "Xatolik yuz berdi! Iltimos ma'lumotlarni tekshirib qaytadan kiriting!"
+        );
+      });
+  }
 }
 
 export default Business;

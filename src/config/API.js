@@ -4,6 +4,8 @@ const API = Axios.create({
   baseURL: "http://b.biznesclub.algopharm.uz/",
 });
 
+export const HTTP = API;
+
 export default (url, token, ...rest) => {
   if (token) {
     return API.get(

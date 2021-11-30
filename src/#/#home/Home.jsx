@@ -26,6 +26,8 @@ import {
 } from "@heroicons/react/outline";
 import Logo from "cmp/Logo";
 import cn from "clsx";
+import { useHistory } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const solutions = [
   {
@@ -85,35 +87,10 @@ const resources = [
   },
 ];
 
-const tabs = [
-  {
-    name: "Yangiliklar",
-    description:
-      "Get all of your questions answered in our forums or contact support.",
-    href: "#",
-    icon: NewspaperIcon,
-    active: true,
-  },
-  {
-    name: "Aksiyalar",
-    description:
-      "Learn how to maximize our platform to get the most out of it.",
-    href: "#",
-    icon: ArchiveIcon,
-  },
-
-  {
-    name: "Tanlangan",
-    description: "Understand how we take your privacy seriously.",
-    href: "#",
-    icon: StarIcon,
-  },
-];
-
 function Home(props) {
   const router = useRouteMatch();
-
-  console.log(router);
+  const history = useHistory();
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const menu = [
     {
@@ -147,6 +124,13 @@ function Home(props) {
       active: router.url.includes("home/profile") ? true : false,
     },
   ];
+
+  console.log(cookies.ACCESS_TOKEN);
+
+  if (!cookies.ACCESS_TOKEN) {
+    history.push("/auth");
+    return "";
+  }
 
   return (
     <section className="relative">
@@ -230,7 +214,10 @@ function Home(props) {
                     ))}
                   </div>
                   <div className="pt-5">
-                    <a className="flex flex-row items-center -m-3 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 | cursor-pointer ">
+                    <a
+                      className="flex flex-row items-center -m-3 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 | cursor-pointer "
+                      onClick={logout}
+                    >
                       <span className="flex items-center justify-center text-lg text-red-400">
                         <LogoutIcon className="h-5" />
                       </span>
@@ -296,6 +283,22 @@ function Home(props) {
       </>
     </section>
   );
+
+  async function logout() {
+    try {
+      removeCookie("ACCESS_TOKEN");
+      removeCookie("REFRESH_TOKEN");
+      removeCookie("IS_ADMIN");
+
+      removeCookie("ACCESS_TOKEN");
+      removeCookie("REFRESH_TOKEN");
+      removeCookie("IS_ADMIN");
+
+      history.push("/auth");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 export default Home;
