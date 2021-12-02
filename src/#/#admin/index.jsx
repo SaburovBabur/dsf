@@ -6,13 +6,19 @@ import {
   Switch,
   Redirect,
   useRouteMatch,
+  useHistory,
 } from "react-router-dom";
 
 import ModeratorUsers from "#/#admin/#/ModeratorUsers";
 import ModeratorBusinesses from "#/#admin/#/ModeratorBusinesses";
 import { LogoutIcon } from "@heroicons/react/outline";
-
+import { useCookies } from "react-cookie";
+import { useEffect } from "react";
 const Admin = () => {
+  const [cookies, setCookie, removeCookie] = useCookies();
+
+  const history = useHistory();
+
   let router = useRouteMatch();
 
   return (
@@ -79,7 +85,10 @@ const Admin = () => {
                 </NavLink>
               </li>
 
-              <li className="my-5 px-4 absolute inset-x-0 bottom-0">
+              <li
+                className="my-5 px-4 absolute inset-x-0 bottom-0"
+                onClick={logout}
+              >
                 <a className="flex flex-row items-center h-12 px-4 rounded-lg text-red-600 hover:bg-red-50 | cursor-pointer">
                   <span className="flex items-center justify-center text-lg text-red-400">
                     <LogoutIcon className="h-7" />
@@ -110,6 +119,22 @@ const Admin = () => {
       </div>
     </div>
   );
+
+  async function logout() {
+    try {
+      removeCookie("ACCESS_TOKEN");
+      removeCookie("REFRESH_TOKEN");
+      removeCookie("IS_ADMIN");
+
+      removeCookie("ACCESS_TOKEN");
+      removeCookie("REFRESH_TOKEN");
+      removeCookie("IS_ADMIN");
+
+      history.push("/auth");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 
 export default Admin;

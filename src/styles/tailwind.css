@@ -51,3 +51,7 @@ html {
 .input:focus {
     @apply border-bluish-500 shadow-bluish;
 }
+
+.react-confirm-alert {
+    width: 70% !important;
+}

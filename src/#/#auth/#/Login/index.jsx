@@ -96,8 +96,15 @@ function Login(props) {
       alert.success("Ro'yxattan omadli o'tdingiz.");
 
       if (data.admin) {
+        setTimeout(() => {
+          history.go(0);
+        }, 2500);
         return history.push("/admin");
       }
+
+      setTimeout(() => {
+        history.go(0);
+      }, 2500);
 
       return history.push("/home");
     } catch (error) {
