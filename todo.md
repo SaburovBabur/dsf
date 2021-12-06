@@ -13,9 +13,9 @@
     - Mod.Filter UI ✅
 
 3. DAY - 3
-    - Moderator Filter (Users)
-    - Moderator CRUD (Users)
+    - Moderator Filter (Users) ✅
+    - Moderator CRUD (Users) ✅
 
 4. DAY - 4
-    - Moderator Filter (Businesses)
-    - Moderator CRUD (Businesses)
+    - Moderator Filter (Businesses) ✅
+    - Moderator CRUD (Businesses) ✅

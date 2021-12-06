@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { ArrowRightIcon, ChevronLeftIcon } from "@heroicons/react/outline";
 import { useForm } from "react-hook-form";
-import API from "config/API";
+import API, { getCookie, HTTP } from "config/API";
 import useSWR from "swr";
 
 function Register(props) {
@@ -43,10 +43,8 @@ function Register(props) {
     group_id: "",
   });
 
-  const { data, error } = useSWR("profile/coaching-type/", API, {
-    focusThrottleInterval: 5000 * 12 * 2,
-  });
-
+  const { data, error } = useSWR("profile/coaching-type/", HTTP);
+  console.log(data);
   const [selectOne, setSelectOne] = useState([]);
   const [selectTwo, setSelectTwo] = useState([]);
   const [selectFinal, setSelectFinal] = useState([]);
@@ -485,7 +483,7 @@ function Register(props) {
     data.append("sms_code", newFullData.sms_code);
     data.append("group_id", newFullData.group_id);
 
-    API.post("profile/register/", data)
+    HTTP.post("profile/register/", data)
       .then((res) => {
         setTimeout(() => {
           history.push("/auth/complete");
@@ -509,7 +507,7 @@ function Register(props) {
 
     setUserData(newData);
 
-    API.post("profile/register/send-code/", {
+    HTTP.post("profile/register/send-code/", {
       phone_number: newData.phone_number,
     }).catch((res) => {
       alert.error(
