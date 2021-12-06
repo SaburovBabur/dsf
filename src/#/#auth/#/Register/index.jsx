@@ -14,6 +14,7 @@ import API, { getCookie, HTTP } from "config/API";
 import useSWR from "swr";
 
 function Register(props) {
+  console.log(props.controlled, "Controlled?");
   const [step, setStep] = useState(1);
   const [isLoading, setAsLoading] = useState(false);
 
@@ -44,7 +45,7 @@ function Register(props) {
   });
 
   const { data, error } = useSWR("profile/coaching-type/", HTTP);
-  console.log(data);
+
   const [selectOne, setSelectOne] = useState([]);
   const [selectTwo, setSelectTwo] = useState([]);
   const [selectFinal, setSelectFinal] = useState([]);
@@ -356,8 +357,14 @@ function Register(props) {
           <>
             <div className="w-full | py-2">
               <a
-                href="/auth/register"
                 className="py-2 | px-5 | inline-flex ifc | cursor-pointer | duration-300 hover:bg-gray-50 | rounded-md click:scale"
+                href={props.controlled ? "#" : "/auth/register"}
+                onClick={() => {
+                  if (props.controlled) {
+                    setStep(1);
+                    props.close();
+                  }
+                }}
               >
                 <ChevronLeftIcon className="h-6" />
                 <h1 className="textgray-900 text-lg font-medium pl-5">
@@ -404,7 +411,6 @@ function Register(props) {
                         </span>{" "}
                         raqamiga yuborilgan kodni kiriting:
                       </p>
-
                       {formState.errors.sms_code && (
                         <p className="text-sm font-bold text-red-500 | py-2">
                           Kodni kiriting:
@@ -485,9 +491,13 @@ function Register(props) {
 
     HTTP.post("profile/register/", data)
       .then((res) => {
-        setTimeout(() => {
-          history.push("/auth/complete");
-        }, 1500);
+        if (!props.controlled) {
+          setTimeout(() => {
+            history.push("/auth/complete");
+          }, 1500);
+        } else {
+          alert.success("Muvaffaqiyatli qo'shildi!");
+        }
       })
       .catch((res) => {
         alert.error(

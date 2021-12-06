@@ -1,6 +1,9 @@
 import { ArrowRightIcon } from "@heroicons/react/outline";
+import { useHistory } from "react-router";
 
 function CompleteAuth(props) {
+  const history = useHistory();
+
   return (
     <div className="fcc | h-full w-full">
       <div className="md:shadow-300 | px-7 py-5 | rounded-md">
@@ -20,7 +23,10 @@ function CompleteAuth(props) {
         </p>
 
         <div className="fcc | w-full | mt-5">
-          <button className="fc | btn btn-block bg-bluish hover:bg-bluish-600 font-bold border-none text-white | outline-none | py-1">
+          <button
+            className="fc | btn btn-block bg-bluish hover:bg-bluish-600 font-bold border-none text-white | outline-none | py-1"
+            onClick={() => history.push("/auth")}
+          >
             Bosh Saxifa <ArrowRightIcon className="h-4 | ml-4" />
           </button>
         </div>

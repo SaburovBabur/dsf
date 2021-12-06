@@ -322,7 +322,7 @@ function ModeratorUsers(props) {
           <h1 className="text-lg font-bold text-center">
             Foydalanuvchi qo'shish
           </h1>
-          <Register controlled={true} />
+          <Register controlled={true} close={toggleDrawer}/>
         </div>
       </div>
 
