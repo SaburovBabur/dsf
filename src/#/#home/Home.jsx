@@ -125,8 +125,6 @@ function Home(props) {
     },
   ];
 
-  console.log(cookies.ACCESS_TOKEN);
-
   if (!cookies.ACCESS_TOKEN) {
     history.push("/auth");
     return "";
@@ -146,7 +144,7 @@ function Home(props) {
               </div>
 
               <div className="">
-                <Logo className="h-7 w-auto" />
+                <Logo className="h-8 w-auto" />
               </div>
             </div>
           </div>
@@ -166,7 +164,7 @@ function Home(props) {
               <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
                 <div className="pt-5 pb-6 px-5">
                   <div className="fcb">
-                    <Logo className="h-7 w-auto my-2" />
+                    <Logo className="h-8 w-auto my-2" />
 
                     <div className="-mr-2">
                       <Popover.Button className="rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 bg-gray-50 hover:bg-gray-100 focus:outline-none">

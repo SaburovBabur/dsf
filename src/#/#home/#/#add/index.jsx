@@ -281,7 +281,7 @@ function Business() {
             ></iframe>
           </div>
         </div>
-        <div className="fcc px-5 pb-5">
+        <div className="fcc py-10">
           <button
             className={cn({
               "fc | btn btn-outline btn-block bg-bluish hover:bg-bluish-600 font-bold border-none text-white | outline-none |": true,

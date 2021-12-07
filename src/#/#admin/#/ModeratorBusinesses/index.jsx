@@ -277,11 +277,14 @@ function ModeratorUsers(props) {
         <h1 className="font-bold text-xl">Foydalanuvchilarni tasdiqlash</h1>
 
         <div className="avatar | fc">
-          <div className="rounded-full w-12 h-12">
-            <img src="https://media.gettyimages.com/photos/closeup-smiling-male-leader-wearing-eyeglasses-picture-id1179627340?s=612x612" />
+          <div className="rounded-full w-12 h-12 shadow-md">
+            <img src="/pcg/logo.png" />
           </div>
 
-          <h1 className="font-bold text-md pl-3">Ibrohim Gulyamov</h1>
+          <div className="flex-col fcc  pl-3">
+            <h1 className="font-bold text-md">Perfect Business Club</h1>
+            <p>Moderator</p>
+          </div>
         </div>
       </div>
 

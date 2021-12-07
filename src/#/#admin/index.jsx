@@ -13,7 +13,7 @@ import ModeratorUsers from "#/#admin/#/ModeratorUsers";
 import ModeratorBusinesses from "#/#admin/#/ModeratorBusinesses";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { useCookies } from "react-cookie";
-import { useEffect } from "react";
+
 const Admin = () => {
   const [cookies, setCookie, removeCookie] = useCookies();
 
@@ -25,7 +25,7 @@ const Admin = () => {
     <div className="w-full flex bg-white">
       <div className="w-1/4 h-screen top-0 sticky left-0 bg-white | shadow-300">
         <div className="py-6">
-          <Logo className="h-7 | px-8 |" />
+          <Logo className="h-12 | px-8 |" />
           <div className="flex | h-full w-full max-w-xs p-4 py-10 bg-white">
             <ul className="flex flex-col w-full">
               <li className="my-px">

@@ -404,37 +404,39 @@ function Register(props) {
                       />
                     )}
 
-                    <div>
-                      <p className="py-2">
-                        <span className="text-bluish-500">
-                          +{userData?.phone_number}
-                        </span>{" "}
-                        raqamiga yuborilgan kodni kiriting:
-                      </p>
-                      {formState.errors.sms_code && (
-                        <p className="text-sm font-bold text-red-500 | py-2">
-                          Kodni kiriting:
+                    {!props.controlled && (
+                      <div>
+                        <p className="py-2">
+                          <span className="text-bluish-500">
+                            +{userData?.phone_number}
+                          </span>{" "}
+                          raqamiga yuborilgan kodni kiriting:
                         </p>
-                      )}
-                      <InputMask
-                        mask="99999"
-                        {...register("sms_code", {
-                          required: true,
-                        })}
-                      >
-                        {(inputProps) => (
-                          <input
-                            name="sms_code"
-                            id="sms_code"
-                            placeholder="_ _ _ _ _"
-                            className={cn({
-                              "input | w-1/4 | input-bordered | text-center": true,
-                              "input-error": formState.errors.sms_code,
-                            })}
-                          />
+                        {formState.errors.sms_code && (
+                          <p className="text-sm font-bold text-red-500 | py-2">
+                            Kodni kiriting:
+                          </p>
                         )}
-                      </InputMask>
-                    </div>
+                        <InputMask
+                          mask="99999"
+                          {...register("sms_code", {
+                            required: true,
+                          })}
+                        >
+                          {(inputProps) => (
+                            <input
+                              name="sms_code"
+                              id="sms_code"
+                              placeholder="_ _ _ _ _"
+                              className={cn({
+                                "input | w-1/4 | input-bordered | text-center": true,
+                                "input-error": formState.errors.sms_code,
+                              })}
+                            />
+                          )}
+                        </InputMask>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -486,24 +488,48 @@ function Register(props) {
     data.append("image", newFullData.image);
     data.append("password", newFullData.password);
     data.append("password2", newFullData.password2);
-    data.append("sms_code", newFullData.sms_code);
     data.append("group_id", newFullData.group_id);
 
-    HTTP.post("profile/register/", data)
-      .then((res) => {
-        if (!props.controlled) {
-          setTimeout(() => {
-            history.push("/auth/complete");
-          }, 1500);
-        } else {
-          alert.success("Muvaffaqiyatli qo'shildi!");
-        }
+    if (props.controlled) {
+      HTTP.post("/backoffice/users/", data, {
+        headers: {
+          Authorization: `Bearer ${getCookie("ACCESS_TOKEN")}`,
+        },
       })
-      .catch((res) => {
-        alert.error(
-          "Xatolik yuz berdi! Iltimos ma'lumotlarni tekshirib qaytadan kiriting!"
-        );
-      });
+        .then((res) => {
+          if (!props.controlled) {
+            setTimeout(() => {
+              history.push("/auth/complete");
+            }, 1500);
+          } else {
+            props.close();
+            alert.success("Muvaffaqiyatli qo'shildi!");
+          }
+        })
+        .catch((res) => {
+          alert.error(
+            "Xatolik yuz berdi! Iltimos ma'lumotlarni tekshirib qaytadan kiriting!"
+          );
+        });
+    } else {
+      data.append("sms_code", newFullData.sms_code);
+
+      HTTP.post("profile/register/", data)
+        .then((res) => {
+          if (!props.controlled) {
+            setTimeout(() => {
+              history.push("/auth/complete");
+            }, 1500);
+          } else {
+            alert.success("Muvaffaqiyatli qo'shildi!");
+          }
+        })
+        .catch((res) => {
+          alert.error(
+            "Xatolik yuz berdi! Iltimos ma'lumotlarni tekshirib qaytadan kiriting!"
+          );
+        });
+    }
   }
 
   function onNext(e) {
@@ -517,13 +543,15 @@ function Register(props) {
 
     setUserData(newData);
 
-    HTTP.post("profile/register/send-code/", {
-      phone_number: newData.phone_number,
-    }).catch((res) => {
-      alert.error(
-        "Xatolik yuz berdi! Iltimos ma'lumotlarni tekshirib qaytadan kiriting!"
-      );
-    });
+    if (!props.controlled) {
+      HTTP.post("profile/register/send-code/", {
+        phone_number: newData.phone_number,
+      }).catch((res) => {
+        alert.error(
+          "Xatolik yuz berdi! Iltimos ma'lumotlarni tekshirib qaytadan kiriting!"
+        );
+      });
+    }
 
     setStep(step + 1);
   }

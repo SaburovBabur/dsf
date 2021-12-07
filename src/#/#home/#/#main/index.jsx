@@ -3,7 +3,6 @@ import { Tab } from "@headlessui/react";
 
 import cn from "clsx";
 
-import SvgEmpty from "icons/SvgEmpty";
 import _ from "lodash";
 
 import useInput from "hooks/useInput.jsx";

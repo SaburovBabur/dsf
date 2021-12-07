@@ -19,7 +19,7 @@ function Login(props) {
   return (
     <div className="lg:px-5 | fcc | h-full w-full">
       <div className="flex flex-col | w-full | space-y-7 | lg:shadow-300 | px-5 py-7 | rounded-lg">
-        <Logo className="h-10 | mb-5" />
+        <Logo className="h-14 | mb-5" />
 
         <InputMask
           mask="+\9\98 99 999 99 99"
