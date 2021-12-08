@@ -3,6 +3,7 @@ import Main from "#/#home/#/#main";
 import AddBusiness from "#/#home/#/#add";
 import Search from "#/#home/#/#search";
 import Business from "#/#home/#/#business";
+import Dev from "#/#dev";
 
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
@@ -34,39 +35,39 @@ const solutions = [
     name: "Asosiy",
     description:
       "Get a better understanding of where your traffic is coming from.",
-    href: "#",
+    href: "/home/dev",
     icon: HomeIcon,
   },
   {
     name: "Mablag'ni Tekshirish",
     description: "Speak directly to your customers in a more meaningful way.",
-    href: "#",
+    href: "/home/dev",
     icon: CurrencyDollarIcon,
   },
   {
     name: "Xabarlar",
     description: "Your customers' data will be safe and secure.",
-    href: "#",
+    href: "/home/dev",
     icon: NewspaperIcon,
   },
   {
     name: "Onlayn do'kon",
     description: "Connect with third-party tools that you're already using.",
-    href: "#",
+    href: "/home/dev",
     icon: ShoppingBagIcon,
   },
   {
     name: "Biznes Market",
     description:
       "Build strategic funnels that will drive your customers to convert",
-    href: "#",
+    href: "/home/dev",
     icon: BriefcaseIcon,
   },
   {
     name: "Xamkorlar uchun",
     description:
       "Build strategic funnels that will drive your customers to convert",
-    href: "#",
+    href: "/home/dev",
     icon: UsersIcon,
   },
 ];
@@ -75,14 +76,14 @@ const resources = [
     name: "Do'stlarga Taklif",
     description:
       "Get all of your questions answered in our forums or contact support.",
-    href: "#",
+    href: "/home/dev",
     icon: InboxIcon,
   },
   {
     name: "Xaridlar Arxivi",
     description:
       "Learn how to maximize our platform to get the most out of it.",
-    href: "#",
+    href: "/home/dev",
     icon: ArchiveIcon,
   },
 ];
@@ -244,6 +245,18 @@ function Home(props) {
 
         <Route path={`/home/search`}>
           <Search />
+        </Route>
+
+        <Route path={`/home/profile`}>
+          <Dev />
+        </Route>
+
+        <Route path={`/home/msg`}>
+          <Dev />
+        </Route>
+
+        <Route path={`/home/dev`}>
+          <Dev />
         </Route>
       </Switch>
 

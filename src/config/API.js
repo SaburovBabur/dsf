@@ -6,17 +6,13 @@ const API = Axios.create({
 
 export const HTTP = API;
 
-export default (url, token, ...rest) => {
+export default (url, token) => {
   if (token) {
-    return API.get(
-      url,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    return API.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-      ...rest
-    );
+    });
   }
 
   return API;

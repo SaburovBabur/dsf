@@ -2,20 +2,16 @@
 
 1. DAY - 1
 
-    - Carousel, Article, Search Filter ✅
-    - Logout ✅
-    - Filter ✅
-    - Add Business ✅
+    - Moderator ADD-USER ✅
+    - Logo ✅
+    - Under-Construction Pages ✅
+    - Verification Fix ✅
+    - User Preview
+    - Business Add Additionals
 
 2. DAY - 2
-    - List-Out Businesses ✅
-    - Complete Auth ✅
-    - Mod.Filter UI ✅
 
-3. DAY - 3
-    - Moderator Filter (Users) ✅
-    - Moderator CRUD (Users) ✅
-
-4. DAY - 4
-    - Moderator Filter (Businesses) ✅
-    - Moderator CRUD (Businesses) ✅
+    - Business Listing
+    - Business Filter
+    - Profile  Listing
+    - V1 Complete

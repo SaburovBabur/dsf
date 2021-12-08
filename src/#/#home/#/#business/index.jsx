@@ -4,32 +4,18 @@ import {
   PhoneIcon,
   PlusIcon,
 } from "@heroicons/react/outline";
-
-import { Tab } from "@headlessui/react";
-
-import cn from "clsx";
-import Carousel from "cmp/Carousel";
-import SvgEmpty from "icons/SvgEmpty";
 import _ from "lodash";
-import useToggle from "hooks/useToggle.jsx";
-import useInput from "hooks/useInput.jsx";
-import useSWR from "swr";
-import API, { getCookie } from "config/API";
-import { useEffect, useState } from "react";
+import useAPI from "hooks/useAPI";
 import Spinner from "cmp/Spinner";
-
 import { Link } from "react-router-dom";
 
 function Business(props) {
-  const { data, error } = useSWR(
-    ["profile/user-business/", getCookie("ACCESS_TOKEN")],
-    API
-  );
+  const { data, error } = useAPI(`profile/user-business/`, { asd: "asd" });
 
   if (error) {
     return "Error";
   }
-  console.log(data);
+
   return (
     <div className="px-3">
       <div className="listing | py-5">
