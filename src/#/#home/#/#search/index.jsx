@@ -91,8 +91,6 @@ function Search(props) {
     });
   }
 
-  console.log(filter);
-
   return (
     <div>
       <Popover className="relative">
@@ -180,7 +178,7 @@ function Search(props) {
               />
 
               <input
-                type="text"
+                type="number"
                 placeholder="Gurux raqami"
                 className="w-full input input-primary border-gray-300 input-bordered rounded-md py-2 h-auto"
                 {...register("group_number")}
