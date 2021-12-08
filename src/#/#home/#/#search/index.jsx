@@ -5,6 +5,7 @@ import {
   PhoneIcon,
   PlusIcon,
   SearchIcon,
+  UserIcon,
 } from "@heroicons/react/outline";
 import _ from "lodash";
 import useAPI from "hooks/useAPI";
@@ -230,6 +231,13 @@ function Search(props) {
                         <PhoneIcon className="h-5 text-gray-300" />
                         <h3 className="pl-2 | text-gray-500 text-xs">
                           +{b.user_phone_number}
+                        </h3>
+                      </div>
+
+                      <div className="fc | pl-7 | pt-3">
+                        <UserIcon className="h-5 text-gray-300" />
+                        <h3 className="pl-2 | text-gray-500 text-xs">
+                          {b.user_full_name}
                         </h3>
                       </div>
                     </div>
